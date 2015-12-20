@@ -8,6 +8,6 @@ public abstract class Player {
 		super();
 	}
 
-	public abstract int doMove();
+	public abstract int doMove(Field field);
 
 }

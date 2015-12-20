@@ -39,14 +39,14 @@ public class Game {
 	}
 
 	private void computerMove() {
-		int columNumber = computerPlayer.doMove();
+		int columNumber = computerPlayer.doMove(field);
 		field.dropTokenIntoColumn(columNumber, computerPlayer.getToken());
 		field.printField();
 	}
 
 	private void humanMove() {
 		System.out.println("Please enter column number:");
-		int columNumber = humanPlayer.doMove();
+		int columNumber = humanPlayer.doMove(field);
 		field.dropTokenIntoColumn(columNumber, humanPlayer.getToken());
 		field.printField();
 	}

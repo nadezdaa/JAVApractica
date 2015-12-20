@@ -6,18 +6,13 @@ public class HumanPlayer extends Player {
 
 	Scanner scanner = new Scanner(System.in);
 
-	private static Field field;
-
 	public HumanPlayer(char token) {
 		super(token);
 	}
 
-	public void printFieldForUser() {
-		field.printField();
-	}
 
 	@Override
-	public int doMove() {
+	public int doMove(Field field) {
 		int columNumber = -1;
 		while (true) {
 			try {
@@ -25,7 +20,7 @@ public class HumanPlayer extends Player {
 			} catch (Exception e) {
 				System.out.println(e.getMessage() + "Please make your next column choose: ");
 			}
-			if (columNumber < 0 || columNumber >field.COLUMNS) {
+			if (columNumber < 0 || columNumber > field.COLUMNS) {
 				throw new IllegalArgumentException();
 			}
 			return columNumber;
