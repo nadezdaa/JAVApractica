@@ -8,6 +8,10 @@ public class Field {
 
 	final FieldSymbol[][] field;
 
+	public int getROWS() {
+		return ROWS;
+	}
+
 	public Field(int colums, int rows) {
 		field = new FieldSymbol[rows][colums];
 	}
@@ -38,26 +42,27 @@ public class Field {
 	}
 
 	public boolean dropTokenIntoColumn(int column, FieldSymbol value) {
-		if (field[0][column] != FieldSymbol.FREE_CHAR) {
+		if (field[column][0] != FieldSymbol.FREE_CHAR) {
 			return false;
 		}
 		int y = field[column].length - 1;
-		while (field[y][column] != FieldSymbol.FREE_CHAR) {
+		while (field[column][y] != FieldSymbol.FREE_CHAR) {
 			y--;
 		}
-		field[y][column] = value;
+		field[column][y] = value;
 		return true;
 	}
 
-	public boolean checkBlankSpace(int row, int column) {
-		if (field[row][column] != FREE_CHAR) {
+	public boolean checkBlankSpace(int x, int y) {
+		if (field[x][y] != FREE_CHAR) {
 			return false;
 		}
 		return true;
 	}
 
 	public boolean WinConditions(FieldSymbol token) {
-		return winHorizontal(token) || winVertical(token);
+		return winHorizontal(token) || winVertical(token) || wonIntoDiagonalFirst(token)
+				|| wonIntoDiagonalSecond(token);
 
 	}
 
@@ -65,8 +70,8 @@ public class Field {
 		int counToken = 0;
 		for (int x = 0; x < COLUMNS; x++) {
 			for (int y = 0; y < ROWS; y++) {
-				if (token.equals(field[y][x])) {
-					counToken = counToken++;
+				if (token.equals(field[x][y])) {
+					counToken++;
 				} else {
 					counToken = 0;
 				}
@@ -82,8 +87,8 @@ public class Field {
 		int counToken = 0;
 		for (int y = 0; y < ROWS; y++) {
 			for (int x = 0; x < COLUMNS; x++) {
-				if (token.equals(field[y][x])) {
-					counToken = counToken++;
+				if (token.equals(field[x][y])) {
+					counToken++;
 				} else {
 					counToken = 0;
 				}
@@ -95,4 +100,75 @@ public class Field {
 		return false;
 	}
 
+	public boolean wonIntoDiagonalFirst(FieldSymbol token) {
+
+		for (int y = ROWS - 1; y > 0; y--) {
+			if (winDiagonalFirst(y, token)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean winDiagonalFirst(int y, FieldSymbol token) {
+		int counToken = 0;
+		for (int x = 0; x < COLUMNS; x++) {
+			if (token.equals(getField()[x][y])) {
+				counToken++;
+				y--;
+				if (y < 0)
+					y = ROWS - 1;
+			} else {
+				counToken = 0;
+			}
+			if (counToken == 4) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean wonIntoDiagonalSecond(FieldSymbol token) {
+
+		for (int y = ROWS - 1; y > 0; y--) {
+			if (winDiagonalSecond(y, token)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean winDiagonalSecond(int y, FieldSymbol token) {
+
+		int counToken = 0;
+		for (int x = (COLUMNS - 1); x > 0; x--) {
+			if (token.equals(getField()[x][y])) {
+				counToken++;
+				y--;
+				if (y < 0)
+					y = ROWS - 1;
+			} else {
+				counToken = 0;
+			}
+			if (counToken == 4) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean draw() {
+		for (int y = 0; y < ROWS; y++) {
+			for (int x = 0; x < COLUMNS; x++) {
+				if (field[x][y] == FREE_CHAR) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public FieldSymbol[][] getField() {
+		return field;
+	}
 }

@@ -6,31 +6,15 @@ public class HumanPlayer extends Player {
 
 	Scanner scanner = new Scanner(System.in);
 
-	public HumanPlayer(char token) {
-		super(token);
-	}
-
-
 	@Override
 	public int doMove(Field field) {
-		int columNumber = -1;
-		while (true) {
-			try {
-				columNumber = Integer.valueOf(scanner.nextLine());
-			} catch (Exception e) {
-				System.out.println(e.getMessage() + "Please make your next column choose: ");
-			}
-			if (columNumber < 0 || columNumber > field.COLUMNS) {
-				throw new IllegalArgumentException();
-			}
-			return columNumber;
+		System.out.println("Please enter column number:");
+		field.printField();
+		int columNumber;
+		columNumber = Integer.parseInt(scanner.nextLine());
+		if (columNumber >= 0 && columNumber < field.COLUMNS && field.checkBlankSpace(0, columNumber)){
+			System.out.print("Please try again. The column must be empty.");
 		}
-	}
-
-	private FieldSymbol token;
-
-	@Override
-	public FieldSymbol getToken() {
-		return token;
+		return columNumber - 1;
 	}
 }

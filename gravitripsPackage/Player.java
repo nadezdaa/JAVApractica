@@ -1,13 +1,15 @@
 package gravitripsPackage;
 
 public abstract class Player {
+	private FieldSymbol token;
 
-	public abstract FieldSymbol getToken();
+	void setToken(FieldSymbol token) {
+		this.token = token;
+	}
 
-	public Player(char token) {
-		super();
+	public FieldSymbol getToken() {
+		return token;
 	}
 
 	public abstract int doMove(Field field);
-
 }

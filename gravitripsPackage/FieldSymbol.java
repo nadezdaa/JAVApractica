@@ -11,6 +11,7 @@ public enum FieldSymbol {
 	public char toChar() {
 		return token;
 	}
-	
+
+
 
 }

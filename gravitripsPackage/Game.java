@@ -1,18 +1,19 @@
 package gravitripsPackage;
 
 import java.util.Scanner;
+import static gravitripsPackage.FieldSymbol.*;
 
 public class Game {
 
 	private final Field field;
-	private Player humanPlayer = new HumanPlayer('O');
-	private Player computerPlayer = new ComputerPlayer('X');
+	private Player[] players;
+	private final FieldSymbol[] token = { X, O };
 
 	public Game(Field field, Player humanPlayer, Player computerPlayer) {
-		super();
 		this.field = field;
-		this.humanPlayer = humanPlayer;
-		this.computerPlayer = computerPlayer;
+		players = new Player[] { humanPlayer, computerPlayer };
+		for (int i = 0; i < 2; i++)
+			players[i].setToken(token[i]);
 	}
 
 	Scanner scanner = new Scanner(System.in);
@@ -20,35 +21,34 @@ public class Game {
 	public void gameStart() {
 
 		field.FieldStart();
-		field.printField();
 
+		int current = 1;
 		do {
-			humanMove();
-			computerMove();
-		} while (!field.WinConditions(FieldSymbol.O) && !field.WinConditions(FieldSymbol.X));
-
-		announceTheWinner();
+			current = (current == 0) ? 1 : 0;
+			playerTurn(current);
+		} while (!field.WinConditions(token[current]) && !field.draw());
+		announceTheWinner(players[current], token[current]);
 	}
 
-	private void announceTheWinner() {
-		if (field.WinConditions(FieldSymbol.O)) {
-			System.out.println("'O' token won the game!");
-		} else if (field.WinConditions(FieldSymbol.X)) {
-			System.out.println("'X' token won the game!");
+	public void playerTurn(int current) {
+		boolean valid = false;
+		do {
+			int columNumber = players[current].doMove(field);
+			valid = field.dropTokenIntoColumn(columNumber, token[current]);
+		} while (!valid);
+	}
+
+	public void announceTheWinner(Player current, Enum<FieldSymbol> fieldSymbol) {
+		if (field.WinConditions(token[0])) {
+			field.printField();
+			System.out.println(token[0] + " token won the game!");
 		}
-	}
-
-	private void computerMove() {
-		int columNumber = computerPlayer.doMove(field);
-		field.dropTokenIntoColumn(columNumber, computerPlayer.getToken());
-		field.printField();
-	}
-
-	private void humanMove() {
-		System.out.println("Please enter column number:");
-		int columNumber = humanPlayer.doMove(field);
-		field.dropTokenIntoColumn(columNumber, humanPlayer.getToken());
-		field.printField();
+		if (field.WinConditions(token[1])) {
+			field.printField();
+			System.out.println(token[1] + " token won the game!");
+		} else if (field.draw()) {
+			System.out.println("DRAW!");
+		}
 	}
 
 }
