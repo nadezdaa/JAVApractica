@@ -12,8 +12,8 @@ public class HumanPlayer extends Player {
 		field.printField();
 		int columNumber;
 		columNumber = Integer.parseInt(scanner.nextLine());
-		if (columNumber >= 0 && columNumber < field.COLUMNS && field.checkBlankSpace(0, columNumber)){
-			System.out.print("Please try again. The column must be empty.");
+		if (columNumber >= 0 && columNumber < field.COLUMNS){
+			System.out.print("Please try again. The column must be in a range betwen 1-7.");
 		}
 		return columNumber - 1;
 	}
