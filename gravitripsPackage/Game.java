@@ -6,14 +6,16 @@ import static gravitripsPackage.FieldSymbol.*;
 public class Game {
 
 	private final Field field;
-	private Player[] players;
-	private final FieldSymbol[] token = { X, O };
+	private Player player1;
+	private Player player2;
+	private Player currentPlayer;
 
-	public Game(Field field, Player humanPlayer, Player computerPlayer) {
+	public Game(Field field, Player player1, Player player2) {
 		this.field = field;
-		players = new Player[] { humanPlayer, computerPlayer };
-		for (int i = 0; i < 2; i++)
-			players[i].setToken(token[i]);
+		this.player1 = player1;
+		this.player2 = player2;
+		player1.setToken(X);
+		player2.setToken(O);
 	}
 
 	Scanner scanner = new Scanner(System.in);
@@ -21,31 +23,34 @@ public class Game {
 	public void gameStart() {
 
 		field.FieldStart();
-
-		int current = 1;
+		currentPlayer = player1;
 		do {
-			current = (current == 0) ? 1 : 0;
-			playerTurn(current);
-		} while (!field.WinConditions(token[current]) && !field.draw());
-		announceTheWinner(players[current], token[current]);
+			playerTurn(currentPlayer);
+			playerTurnSwitching();
+		} while (!field.winConditions(currentPlayer.getToken()) && !field.draw());
+		announceTheWinner(currentPlayer.getToken());
 	}
 
-	public void playerTurn(int current) {
+	private void playerTurn(Player currentPlayer) {
 		boolean valid = false;
 		do {
-			int columNumber = players[current].doMove(field);
-			valid = field.dropTokenIntoColumn(columNumber, token[current]);
+			int columNumber = currentPlayer.playerMoveReturn(field);
+			valid = field.dropTokenIntoColumn(columNumber, currentPlayer.getToken());
 		} while (!valid);
 	}
 
-	public void announceTheWinner(Player current, Enum<FieldSymbol> fieldSymbol) {
-		if (field.WinConditions(token[0])) {
-			field.printField();
-			System.out.println(token[0] + " token won the game!");
+	private void playerTurnSwitching() {
+		if (currentPlayer == player1) {
+			currentPlayer = player2;
+		} else {
+			currentPlayer = player1;
 		}
-		if (field.WinConditions(token[1])) {
+	}
+
+	public void announceTheWinner(FieldSymbol token) {
+		if (field.winConditions(token)) {
 			field.printField();
-			System.out.println(token[1] + " token won the game!");
+			System.out.println(token + " token won the game! Congratulations! ");
 		} else if (field.draw()) {
 			System.out.println("DRAW!");
 		}

@@ -11,5 +11,5 @@ public abstract class Player {
 		return token;
 	}
 
-	public abstract int doMove(Field field);
+	public abstract int playerMoveReturn(Field field);
 }

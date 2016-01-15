@@ -7,10 +7,10 @@ public class ComputerPlayer extends Player {
 	Random random = new Random();
 
 	@Override
-	public int doMove(Field field) {
+	public int playerMoveReturn(Field field) {
 
 		int ColumNumber;
-		ColumNumber = random.nextInt(field.getCOLUMNS());
+		ColumNumber = random.nextInt(field.getColumns());
 		return ColumNumber;
 	}
 

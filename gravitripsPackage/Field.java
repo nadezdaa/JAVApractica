@@ -3,14 +3,11 @@ package gravitripsPackage;
 import static gravitripsPackage.FieldSymbol.*;
 
 public class Field {
-	int ROWS = 6;
-	int COLUMNS = 7;
+	int rows = 6;
+	int columns = 7;
 
-	final FieldSymbol[][] field;
+	FieldSymbol[][] field;
 
-	public int getROWS() {
-		return ROWS;
-	}
 
 	public Field(int colums, int rows) {
 		field = new FieldSymbol[rows][colums];
@@ -25,19 +22,19 @@ public class Field {
 	}
 
 	public void printField() {
-		for (int x = 0; x < COLUMNS; x++) {
+		for (int x = 0; x < columns; x++) {
 			System.out.print((x + 1) + " ");
 		}
 		System.out.println();
-		for (int y = 0; y < ROWS; y++) {
-			for (int x = 0; x < COLUMNS; x++) {
+		for (int y = 0; y < rows; y++) {
+			for (int x = 0; x < columns; x++) {
 				System.out.print(field[x][y].toChar() + " ");
 			}
 			System.out.println();
 		}
 	}
 
-	public Integer getCOLUMNS() {
+	public Integer getColumns() {
 		return field.length;
 	}
 
@@ -54,13 +51,10 @@ public class Field {
 	}
 
 	public boolean checkBlankSpace(int x, int y) {
-		if (field[x][y] != FREE_CHAR) {
-			return false;
-		}
-		return true;
+		 return field[x][y] == FREE_CHAR;
 	}
 
-	public boolean WinConditions(FieldSymbol token) {
+	public boolean winConditions(FieldSymbol token) {
 		return winHorizontal(token) || winVertical(token) || wonIntoDiagonalFirst(token)
 				|| wonIntoDiagonalSecond(token);
 
@@ -68,9 +62,9 @@ public class Field {
 
 	public boolean winVertical(FieldSymbol token) {
 		int counToken = 0;
-		for (int x = 0; x < COLUMNS; x++) {
-			for (int y = 0; y < ROWS; y++) {
-				if (token.equals(field[x][y])) {
+		for (int x = 0; x < columns; x++) {
+			for (int y = 0; y < rows; y++) {
+				if (token == (field[x][y])) {
 					counToken++;
 				} else {
 					counToken = 0;
@@ -85,9 +79,9 @@ public class Field {
 
 	public boolean winHorizontal(FieldSymbol token) {
 		int counToken = 0;
-		for (int y = 0; y < ROWS; y++) {
-			for (int x = 0; x < COLUMNS; x++) {
-				if (token.equals(field[x][y])) {
+		for (int y = 0; y < rows; y++) {
+			for (int x = 0; x < columns; x++) {
+				if (token == (field[x][y])) {
 					counToken++;
 				} else {
 					counToken = 0;
@@ -102,7 +96,7 @@ public class Field {
 
 	public boolean wonIntoDiagonalFirst(FieldSymbol token) {
 
-		for (int y = ROWS - 1; y > 0; y--) {
+		for (int y = rows - 1; y > 0; y--) {
 			if (winDiagonalFirst(y, token)) {
 				return true;
 			}
@@ -112,12 +106,11 @@ public class Field {
 
 	public boolean winDiagonalFirst(int y, FieldSymbol token) {
 		int counToken = 0;
-		for (int x = 0; x < COLUMNS; x++) {
-			if (token.equals(getField()[x][y])) {
+		for (int x = 0; x < columns; x++) {
+			if (token == (getField()[x][y])) {
 				counToken++;
 				y--;
-				if (y < 0)
-					y = ROWS - 1;
+				if (y < 0)y = rows - 1;
 			} else {
 				counToken = 0;
 			}
@@ -130,7 +123,7 @@ public class Field {
 
 	public boolean wonIntoDiagonalSecond(FieldSymbol token) {
 
-		for (int y = ROWS - 1; y > 0; y--) {
+		for (int y = rows - 1; y > 0; y--) {
 			if (winDiagonalSecond(y, token)) {
 				return true;
 			}
@@ -141,12 +134,12 @@ public class Field {
 	public boolean winDiagonalSecond(int y, FieldSymbol token) {
 
 		int counToken = 0;
-		for (int x = (COLUMNS - 1); x > 0; x--) {
-			if (token.equals(getField()[x][y])) {
+		for (int x = (columns - 1); x > 0; x--) {
+			if (token == (getField()[x][y])) {
 				counToken++;
 				y--;
 				if (y < 0)
-					y = ROWS - 1;
+					y = rows - 1;
 			} else {
 				counToken = 0;
 			}
@@ -158,8 +151,8 @@ public class Field {
 	}
 
 	public boolean draw() {
-		for (int y = 0; y < ROWS; y++) {
-			for (int x = 0; x < COLUMNS; x++) {
+		for (int y = 0; y < rows; y++) {
+			for (int x = 0; x < columns; x++) {
 				if (field[x][y] == FREE_CHAR) {
 					return false;
 				}
@@ -171,4 +164,6 @@ public class Field {
 	public FieldSymbol[][] getField() {
 		return field;
 	}
+
+
 }
